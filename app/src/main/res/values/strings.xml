@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Cats</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_cats_list">New Cats</string>
+    <string name="menu_saved_cats">Saved Cats</string>
+    <string name="save_cat_title">Save cat?</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
+</resources>
