@@ -50,7 +50,7 @@ class SavedCatsFragment : Fragment() {
 
     fun showDialog() {
         val alertDialogBuilder = AlertDialog.Builder(context)
-        alertDialogBuilder.setTitle(R.string.save_cat_title)
+        alertDialogBuilder.setTitle(R.string.delete_cats)
         alertDialogBuilder.setNegativeButton(R.string.cancel) { _, _->  viewModel.dialogResult(false)}
         alertDialogBuilder.setPositiveButton(R.string.apply) {_, _ -> viewModel.dialogResult(true)}
         alertDialogBuilder.create().show()
