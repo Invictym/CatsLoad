@@ -41,7 +41,8 @@ class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdap
 
         fun bind(item: Cat, listener: CatItemListener, position: Int, size: Int) {
             itemView.setOnClickListener {
-                val bitmap = (catImage.drawable as BitmapDrawable).bitmap
+                val d = catImage.drawable as? BitmapDrawable ?: return@setOnClickListener
+                val bitmap = d.bitmap
                 val stream = ByteArrayOutputStream()
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
                 item.image = stream.toByteArray()
