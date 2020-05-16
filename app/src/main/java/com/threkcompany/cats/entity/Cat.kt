@@ -58,7 +58,6 @@ class BreedsConverter {
             return listOf()
         }
         var b = Gson().fromJson<List<Breed>>(breed, Breed::class.java)
-        Log.w("EEEEEE", "$b $breed")
         return b ?: listOf()
     }
 

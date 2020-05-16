@@ -5,11 +5,11 @@ import androidx.room.*
 import com.threkcompany.cats.entity.BreedsConverter
 import com.threkcompany.cats.entity.Cat
 
-@Database(entities = [Cat::class], version = 1,  exportSchema = false)
+@Database(entities = [Cat::class], version = 1, exportSchema = false)
 @TypeConverters(BreedsConverter::class)
 abstract class CatsDb : RoomDatabase() {
 
-    abstract val catDbDao : CatsDatabaseDao
+    abstract val catDbDao: CatsDatabaseDao
 
     companion object {
 
@@ -21,7 +21,11 @@ abstract class CatsDb : RoomDatabase() {
                 var instance = INSTANCE
 
                 if (instance == null) {
-                    instance = Room.databaseBuilder(context.applicationContext, CatsDb::class.java, "cats_database")
+                    instance = Room.databaseBuilder(
+                        context.applicationContext,
+                        CatsDb::class.java,
+                        "cats_database"
+                    )
                         .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance

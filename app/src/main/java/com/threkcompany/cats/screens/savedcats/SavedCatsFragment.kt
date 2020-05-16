@@ -30,7 +30,12 @@ class SavedCatsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val bind = DataBindingUtil.inflate<FragmentCatsListBinding>(inflater, R.layout.fragment_cats_list, container, false)
+        val bind = DataBindingUtil.inflate<FragmentCatsListBinding>(
+            inflater,
+            R.layout.fragment_cats_list,
+            container,
+            false
+        )
 
         val app = requireNotNull(this.activity).application
         val db = CatsDb.getInstance(app).catDbDao
@@ -39,20 +44,23 @@ class SavedCatsFragment : Fragment() {
 
         val recyclerView = bind.catsList
         recyclerView.layoutManager = GridLayoutManager(context, 2)
-        val adapter = CatsAdapter(CatsAdapter.CatItemListener ({ cat ->  viewModel.clickOnCat(cat) }, {_, _ ->  }))
+        val adapter = CatsAdapter(
+            CatsAdapter.CatItemListener({ cat -> viewModel.clickOnCat(cat) },
+                { _, _ -> })
+        )
         recyclerView.adapter = adapter
 
         viewModel.cats.observe(viewLifecycleOwner, Observer { cats ->
             adapter.cats = cats
-         })
+        })
         return bind.root
     }
 
     fun showDialog() {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.setTitle(R.string.delete_cats)
-        alertDialogBuilder.setNegativeButton(R.string.cancel) { _, _->  viewModel.dialogResult(false)}
-        alertDialogBuilder.setPositiveButton(R.string.apply) {_, _ -> viewModel.dialogResult(true)}
+        alertDialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> viewModel.dialogResult(false) }
+        alertDialogBuilder.setPositiveButton(R.string.apply) { _, _ -> viewModel.dialogResult(true) }
         alertDialogBuilder.create().show()
     }
 }

@@ -18,7 +18,7 @@ import com.threkcompany.cats.logic.db.CatsDb
 import com.threkcompany.cats.screens.cats.adapters.CatsAdapter
 
 class CatsListFragment : Fragment() {
-    lateinit var viewModel : CatsListViewModel
+    lateinit var viewModel: CatsListViewModel
     lateinit var bind: FragmentCatsListBinding
 
     override fun onCreateView(
@@ -31,16 +31,18 @@ class CatsListFragment : Fragment() {
         setHasOptionsMenu(true)
 
         val recycler = bind.catsList
-        val adapter = CatsAdapter(CatsAdapter.CatItemListener(
-            {cat ->  viewModel.clickOnCat(cat)},
-            {position, size -> viewModel.bindPosition(position, size)}))
+        val adapter = CatsAdapter(
+            CatsAdapter.CatItemListener(
+                { cat -> viewModel.clickOnCat(cat) },
+                { position, size -> viewModel.bindPosition(position, size) })
+        )
         recycler.adapter = adapter
         recycler.layoutManager = GridLayoutManager(context, 2)
 
         val app = requireNotNull(this.activity).application
         val db = CatsDb.getInstance(app).catDbDao
 
-        val factory = CatsListViewModelFactory(CatsListViewModel.Listener {this.showDialog()}, db)
+        val factory = CatsListViewModelFactory(CatsListViewModel.Listener { this.showDialog() }, db)
 
         viewModel = ViewModelProvider(this, factory).get(CatsListViewModel::class.java)
         viewModel.cats.observe(viewLifecycleOwner, Observer { cats -> adapter.cats = cats })
@@ -51,8 +53,8 @@ class CatsListFragment : Fragment() {
     fun showDialog() {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.setTitle(R.string.save_cat_title)
-        alertDialogBuilder.setNegativeButton(R.string.cancel) { _, _->  viewModel.dialogResult(false)}
-        alertDialogBuilder.setPositiveButton(R.string.apply) {_, _ -> viewModel.dialogResult(true)}
+        alertDialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> viewModel.dialogResult(false) }
+        alertDialogBuilder.setPositiveButton(R.string.apply) { _, _ -> viewModel.dialogResult(true) }
         alertDialogBuilder.create().show()
     }
 }

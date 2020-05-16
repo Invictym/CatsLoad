@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.threkcompany.cats.logic.db.CatsDatabaseDao
 import java.lang.IllegalArgumentException
 
-class CatsListViewModelFactory(val listener: CatsListViewModel.Listener, val db: CatsDatabaseDao) : ViewModelProvider.Factory {
+class CatsListViewModelFactory(val listener: CatsListViewModel.Listener, val db: CatsDatabaseDao) :
+    ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CatsListViewModel::class.java)) {

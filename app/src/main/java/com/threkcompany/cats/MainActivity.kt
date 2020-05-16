@@ -12,12 +12,13 @@ import com.threkcompany.cats.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var appBarConfiguration : AppBarConfiguration
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val biding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val biding =
+            DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
         drawerLayout = biding.drawerLayout
 

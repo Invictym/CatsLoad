@@ -60,7 +60,11 @@ class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdap
                     )
                 )
             } else {
-                LoadImagePicasso().load(catImage, getPlaceHolder(itemView.context.applicationContext), item.url)
+                LoadImagePicasso().load(
+                    catImage,
+                    getPlaceHolder(itemView.context.applicationContext),
+                    item.url
+                )
             }
         }
 
@@ -85,8 +89,10 @@ class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdap
     }
 
 
-
-    class CatItemListener(var function: (cat: Cat) -> Unit, var funPosition: (position: Int, size: Int) -> Unit) {
+    class CatItemListener(
+        var function: (cat: Cat) -> Unit,
+        var funPosition: (position: Int, size: Int) -> Unit
+    ) {
         fun onClick(cat: Cat) = function(cat)
         fun bindPosition(position: Int, size: Int) = funPosition(position, size)
     }

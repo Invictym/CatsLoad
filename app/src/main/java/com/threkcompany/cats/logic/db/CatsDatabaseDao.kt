@@ -17,6 +17,6 @@ interface CatsDatabaseDao {
     fun update(cat: Cat)
 
     @Query("SELECT * FROM cat_table")
-    fun getCats() : LiveData<List<Cat>>
+    fun getCats(): LiveData<List<Cat>>
 
 }

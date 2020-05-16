@@ -19,19 +19,21 @@ class CatsListViewModel(val listener: Listener, val db: CatsDatabaseDao) : ViewM
     private val _cats = MutableLiveData<ArrayList<Cat>>()
     private val imageCount = 8
     val cats: LiveData<ArrayList<Cat>>
-        get() =_cats
+        get() = _cats
 
     lateinit var selectedCat: Cat
 
     private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main +  viewModelJob)
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     init {
         val provider = SearchCatsProvider.provideSearchCats()
         provider.searchCats(imageCount)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe({result -> _cats.postValue(result)}, {er -> Log.w("Cat load error", "$er")})
+            .subscribe(
+                { result -> _cats.postValue(result) },
+                { er -> Log.w("Cat load error", "$er") })
     }
 
     fun clickOnCat(cat: Cat) {
@@ -44,7 +46,9 @@ class CatsListViewModel(val listener: Listener, val db: CatsDatabaseDao) : ViewM
             SearchCatsProvider.provideSearchCats().searchCats(imageCount)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({result -> _cats.value?.addAll(result)}, {er -> Log.w("Cat load error", "$er")})
+                .subscribe(
+                    { result -> _cats.value?.addAll(result) },
+                    { er -> Log.w("Cat load error", "$er") })
         }
     }
 
