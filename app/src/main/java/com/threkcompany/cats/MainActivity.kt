@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(biding.navView, navController)
         appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

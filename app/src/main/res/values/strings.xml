@@ -8,5 +8,6 @@
     <string name="save_cat_title">Save cat?</string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
+    <string name="save_cat_to_storage">Save image to dir?</string>
     <string name="delete_cats">Delete cats?</string>
 </resources>

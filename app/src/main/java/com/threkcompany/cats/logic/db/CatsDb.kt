@@ -30,7 +30,7 @@ abstract class CatsDb : RoomDatabase() {
                         .build()
                     INSTANCE = instance
                 }
-                return instance!!
+                return instance
             }
         }
     }

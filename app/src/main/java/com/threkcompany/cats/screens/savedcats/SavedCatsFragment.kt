@@ -45,9 +45,8 @@ class SavedCatsFragment : Fragment() {
         val recyclerView = bind.catsList
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         val adapter = CatsAdapter(
-            CatsAdapter.CatItemListener({ cat -> viewModel.clickOnCat(cat) },
-                { _, _ -> })
-        )
+            CatsAdapter.CatItemListener({ cat, bitmap -> viewModel.clickOnCat(cat) },
+                { _, _ -> }))
         recyclerView.adapter = adapter
 
         viewModel.cats.observe(viewLifecycleOwner, Observer { cats ->

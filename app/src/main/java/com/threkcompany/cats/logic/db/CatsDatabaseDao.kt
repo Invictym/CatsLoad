@@ -7,7 +7,7 @@ import com.threkcompany.cats.entity.Cat
 @Dao
 interface CatsDatabaseDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(cat: Cat)
 
     @Delete
@@ -18,5 +18,8 @@ interface CatsDatabaseDao {
 
     @Query("SELECT * FROM cat_table")
     fun getCats(): LiveData<List<Cat>>
+
+    @Query("SELECT * FROM cat_table WHERE url=:url")
+    fun getCat(url: String): LiveData<Cat>
 
 }

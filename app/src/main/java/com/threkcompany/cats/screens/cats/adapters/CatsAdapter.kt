@@ -10,11 +10,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.threkcompany.cats.R
 import com.threkcompany.cats.entity.Cat
-import com.threkcompany.cats.logic.enternet.LoadImagePicasso
 import java.io.ByteArrayOutputStream
-
 
 class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdapter.ViewHolder>() {
 
@@ -46,7 +46,7 @@ class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdap
                 val stream = ByteArrayOutputStream()
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
                 item.image = stream.toByteArray()
-                listener.onClick(item)
+                listener.onClick(item, bitmap)
             }
 
             listener.bindPosition(position, size)
@@ -60,11 +60,11 @@ class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdap
                     )
                 )
             } else {
-                LoadImagePicasso().load(
-                    catImage,
-                    getPlaceHolder(itemView.context.applicationContext),
-                    item.url
-                )
+                Glide
+                    .with(itemView.context.applicationContext)
+                    .load(item.url)
+                    .apply(RequestOptions.placeholderOf(getPlaceHolder(itemView.context.applicationContext)))
+                    .into(catImage)
             }
         }
 
@@ -78,8 +78,7 @@ class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdap
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
-                val view =
-                    LayoutInflater.from(parent.context).inflate(R.layout.cat_layout, parent, false)
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.cat_layout, parent, false)
                 val params = view.layoutParams
                 params.height = parent.context.resources.displayMetrics.heightPixels / 3
                 view.layoutParams = params
@@ -88,12 +87,11 @@ class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdap
         }
     }
 
-
     class CatItemListener(
-        var function: (cat: Cat) -> Unit,
+        var function: (cat: Cat, bitmap: Bitmap) -> Unit,
         var funPosition: (position: Int, size: Int) -> Unit
     ) {
-        fun onClick(cat: Cat) = function(cat)
+        fun onClick(cat: Cat, bitmap: Bitmap) = function(cat, bitmap)
         fun bindPosition(position: Int, size: Int) = funPosition(position, size)
     }
 }
