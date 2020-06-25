@@ -1,8 +1,9 @@
 package com.threkcompany.cats.screens.savedcats
 
 import android.app.AlertDialog
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +15,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 
 import com.threkcompany.cats.R
 import com.threkcompany.cats.databinding.FragmentCatsListBinding
+import com.threkcompany.cats.entity.Cat
 import com.threkcompany.cats.logic.db.CatsDb
-import com.threkcompany.cats.screens.cats.CatsListViewModel
 import com.threkcompany.cats.screens.cats.adapters.CatsAdapter
 
 class SavedCatsFragment : Fragment() {
@@ -39,13 +40,14 @@ class SavedCatsFragment : Fragment() {
 
         val app = requireNotNull(this.activity).application
         val db = CatsDb.getInstance(app).catDbDao
-        val factory = SavedCatsViewModelFactory(CatsListViewModel.Listener { showDialog() }, db)
+        val factory = SavedCatsViewModelFactory(requireContext(), requireContext().getExternalFilesDir(
+            Environment.DIRECTORY_DOWNLOADS)!!.path, db)
         viewModel = ViewModelProvider(this, factory).get(SavedCatsViewModel::class.java)
 
         val recyclerView = bind.catsList
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         val adapter = CatsAdapter(
-            CatsAdapter.CatItemListener({ cat, bitmap -> viewModel.clickOnCat(cat) },
+            CatsAdapter.CatItemListener({ cat, bitmap -> showDialog(cat, bitmap) },
                 { _, _ -> }))
         recyclerView.adapter = adapter
 
@@ -55,11 +57,12 @@ class SavedCatsFragment : Fragment() {
         return bind.root
     }
 
-    fun showDialog() {
+    private fun showDialog(cat: Cat, bitmap: Bitmap) {
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.setTitle(R.string.delete_cats)
-        alertDialogBuilder.setNegativeButton(R.string.cancel) { _, _ -> viewModel.dialogResult(false) }
-        alertDialogBuilder.setPositiveButton(R.string.apply) { _, _ -> viewModel.dialogResult(true) }
+        alertDialogBuilder.setNegativeButton(R.string.cancel) { _, _ ->  }
+        alertDialogBuilder.setNeutralButton(R.string.save_cat_to_storage) {_, _ -> viewModel.dialogResult(bitmap)}
+        alertDialogBuilder.setPositiveButton(R.string.apply) { _, _ -> viewModel.dialogResult(cat) }
         alertDialogBuilder.create().show()
     }
 }

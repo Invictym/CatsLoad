@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +45,7 @@ class CatsListFragment : Fragment() {
         val app = requireNotNull(this.activity).application
         val db = CatsDb.getInstance(app).catDbDao
 
-        val factory = CatsListViewModelFactory(requireContext(), requireContext().filesDir.path, db)
+        val factory = CatsListViewModelFactory(requireContext(), requireContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!.path, db)
 
         viewModel = ViewModelProvider(this, factory).get(CatsListViewModel::class.java)
         viewModel.cats.observe(viewLifecycleOwner, Observer { cats -> adapter.cats = cats })

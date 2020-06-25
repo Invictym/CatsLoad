@@ -27,9 +27,6 @@ class CatsListViewModel(
     private val imageCount = 8
     val cats: LiveData<ArrayList<Cat>>
         get() = _cats
-
-    lateinit var selectedCat: Cat
-
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
@@ -57,7 +54,7 @@ class CatsListViewModel(
     fun dialogResult(cat: Cat) {
         uiScope.launch {
             withContext(Dispatchers.IO) {
-                db.insert(selectedCat)
+                db.insert(cat)
             }
         }
     }
@@ -73,9 +70,5 @@ class CatsListViewModel(
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
-    }
-
-    class Listener(var function: () -> Unit) {
-        fun showDialog() = function()
     }
 }

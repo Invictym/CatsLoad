@@ -44,6 +44,8 @@ class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdap
                 val d = catImage.drawable as? BitmapDrawable ?: return@setOnClickListener
                 val bitmap = d.bitmap
                 val stream = ByteArrayOutputStream()
+                item.height = catImage.getDrawable().getIntrinsicHeight()
+                item.width = catImage.getDrawable().getIntrinsicWidth()
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
                 item.image = stream.toByteArray()
                 listener.onClick(item, bitmap)
@@ -55,7 +57,7 @@ class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdap
                 val bmp = BitmapFactory.decodeByteArray(item.image, 0, item.image.size)
                 catImage.setImageBitmap(
                     Bitmap.createScaledBitmap(
-                        bmp, 700, 700,
+                        bmp, item.width, item.height,
                         false
                     )
                 )
@@ -78,7 +80,8 @@ class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdap
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.cat_layout, parent, false)
+                val view =
+                    LayoutInflater.from(parent.context).inflate(R.layout.cat_layout, parent, false)
                 val params = view.layoutParams
                 params.height = parent.context.resources.displayMetrics.heightPixels / 3
                 view.layoutParams = params
