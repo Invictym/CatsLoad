@@ -30,7 +30,7 @@ class SavedCatsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val bind = DataBindingUtil.inflate<FragmentCatsListBinding>(
             inflater,
             R.layout.fragment_cats_list,

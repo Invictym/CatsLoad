@@ -16,7 +16,7 @@ import com.threkcompany.cats.R
 import com.threkcompany.cats.entity.Cat
 import java.io.ByteArrayOutputStream
 
-class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdapter.ViewHolder>() {
+class CatsAdapter(private val listener: CatItemListener) : RecyclerView.Adapter<CatsAdapter.ViewHolder>() {
 
     var cats = listOf<Cat>()
         set(value) {
@@ -44,8 +44,8 @@ class CatsAdapter(val listener: CatItemListener) : RecyclerView.Adapter<CatsAdap
                 val d = catImage.drawable as? BitmapDrawable ?: return@setOnClickListener
                 val bitmap = d.bitmap
                 val stream = ByteArrayOutputStream()
-                item.height = catImage.getDrawable().getIntrinsicHeight()
-                item.width = catImage.getDrawable().getIntrinsicWidth()
+                item.height = catImage.drawable.intrinsicHeight
+                item.width = catImage.drawable.intrinsicWidth
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
                 item.image = stream.toByteArray()
                 listener.onClick(item, bitmap)
