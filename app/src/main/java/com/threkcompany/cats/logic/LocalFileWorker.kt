@@ -12,7 +12,7 @@ import java.io.OutputStream
 
 class LocalFileWorker {
 
-     fun saveImageToDir(path: String, name: String, bitmap: Bitmap, context: Context): Uri {
+    fun saveImageToDir(path: String, name: String, bitmap: Bitmap, context: Context): Uri {
 
         val file = File(path, "$name.jpg")
         file.createNewFile()
@@ -25,8 +25,13 @@ class LocalFileWorker {
             stream.flush()
 
             stream.close()
-            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), file.getName(),  file.getName());
-        } catch (e: IOException){ // Catch the exception
+            MediaStore.Images.Media.insertImage(
+                context.contentResolver,
+                file.absolutePath,
+                file.name,
+                file.name
+            )
+        } catch (e: IOException) { // Catch the exception
             Log.e("Save error", e.toString())
         }
 

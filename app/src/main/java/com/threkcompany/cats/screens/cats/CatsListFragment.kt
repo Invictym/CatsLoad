@@ -27,7 +27,7 @@ class CatsListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         bind = DataBindingUtil.inflate(inflater, R.layout.fragment_cats_list, container, false)
 
@@ -52,7 +52,7 @@ class CatsListFragment : Fragment() {
 
         ActivityCompat.requestPermissions(requireActivity(),
             listOf(Manifest.permission.READ_EXTERNAL_STORAGE).toTypedArray(),
-            1);
+            1)
 
         return bind.root
     }

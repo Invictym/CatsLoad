@@ -12,7 +12,6 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
-
 interface CatsApiService {
 
     @Headers("x-api-key: 19e81a07-ca07-4968-b54a-8f4a059bc103")
@@ -31,7 +30,6 @@ interface CatsApiService {
                 .connectionSpecs(tlsSpecs)
                 .build()
 
-
             val retrofit = Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -43,7 +41,7 @@ interface CatsApiService {
     }
 }
 
-class SearchCats(val service: CatsApiService) {
+class SearchCats(private val service: CatsApiService) {
     fun searchCats(limit: Int): Observable<ArrayList<Cat>> {
         return service.search(limit)
     }

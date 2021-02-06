@@ -1,6 +1,5 @@
 package com.threkcompany.cats.entity
 
-import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
@@ -53,12 +52,11 @@ class BreedsConverter {
     }
 
     @TypeConverter
-    fun toBreeds(breed: String): List<Breed> {
+    fun toBreeds(breed: String?): List<Breed> {
         if (breed == null) {
             return listOf()
         }
-        var b = Gson().fromJson<List<Breed>>(breed, Breed::class.java)
+        val b = Gson().fromJson<List<Breed>>(breed, Breed::class.java)
         return b ?: listOf()
     }
-
 }

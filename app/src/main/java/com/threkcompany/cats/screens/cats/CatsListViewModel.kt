@@ -1,5 +1,6 @@
 package com.threkcompany.cats.screens.cats
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -17,10 +18,11 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import java.io.File
 
+@SuppressLint("CheckResult")
 class CatsListViewModel(
-    val context: Context,
+    private val context: Context,
     private val path: String,
-    val db: CatsDatabaseDao
+    private val db: CatsDatabaseDao
 ) : ViewModel() {
 
     private val _cats = MutableLiveData<ArrayList<Cat>>()

@@ -8,9 +8,11 @@ import com.threkcompany.cats.logic.LocalFileWorker
 import com.threkcompany.cats.logic.db.CatsDatabaseDao
 import kotlinx.coroutines.*
 
-class SavedCatsViewModel(val context: Context,
-                         private val path: String,
-                         val db: CatsDatabaseDao) : ViewModel() {
+class SavedCatsViewModel(
+    private val context: Context,
+    private val path: String,
+    private val db: CatsDatabaseDao
+) : ViewModel() {
 
     val cats = db.getCats()
     private var viewModelJob = Job()
@@ -27,9 +29,11 @@ class SavedCatsViewModel(val context: Context,
     fun dialogResult(bitmap: Bitmap) {
         uiScope.launch {
             withContext(Dispatchers.IO) {
-                LocalFileWorker().saveImageToDir(path, "cat_${System.currentTimeMillis()}" , bitmap, context)
+                LocalFileWorker().saveImageToDir(
+                    path, "cat_${System.currentTimeMillis()}",
+                    bitmap, context
+                )
             }
         }
     }
-
 }
