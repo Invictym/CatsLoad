@@ -1,38 +1,42 @@
 package com.threkcompany.cats.screens.savedcats
 
 import android.content.Context
-import android.graphics.Bitmap
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.threkcompany.cats.entity.Cat
-import com.threkcompany.cats.logic.LocalFileWorker
 import com.threkcompany.cats.logic.db.CatsDatabaseDao
+import com.threkcompany.cats.screens.base.BaseViewModel
 import kotlinx.coroutines.*
 
 class SavedCatsViewModel(
-    private val context: Context,
-    private val path: String,
-    private val db: CatsDatabaseDao
-) : ViewModel() {
-
-    val cats = db.getCats()
+    context: Context,
+    path: String,
+    private val db: CatsDatabaseDao,
+    callback: MessageCallBack
+) : BaseViewModel(db, context, path, callback) {
+    private val _cats = MutableLiveData<List<Cat>>()
+    val cats : LiveData<List<Cat>>
+        get() = _cats
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    fun dialogResult(cat: Cat) {
+    init {
+        loadCats()
+    }
+
+    private fun loadCats() {
         uiScope.launch {
             withContext(Dispatchers.IO) {
-                db.delete(cat)
+                _cats.postValue(db.getCats())
             }
         }
     }
 
-    fun dialogResult(bitmap: Bitmap) {
+    fun dialogResultRemove(cat: Cat) {
         uiScope.launch {
             withContext(Dispatchers.IO) {
-                LocalFileWorker().saveImageToDir(
-                    path, "cat_${System.currentTimeMillis()}",
-                    bitmap, context
-                )
+                db.delete(cat)
+                loadCats()
             }
         }
     }

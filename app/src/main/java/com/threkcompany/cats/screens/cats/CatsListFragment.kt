@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,9 +17,10 @@ import com.threkcompany.cats.R
 import com.threkcompany.cats.databinding.FragmentCatsListBinding
 import com.threkcompany.cats.entity.Cat
 import com.threkcompany.cats.logic.db.CatsDb
+import com.threkcompany.cats.screens.base.BaseFragment
 import com.threkcompany.cats.screens.cats.adapters.CatsAdapter
 
-class CatsListFragment : Fragment() {
+class CatsListFragment : BaseFragment() {
     lateinit var viewModel: CatsListViewModel
     lateinit var bind: FragmentCatsListBinding
 
@@ -29,7 +29,8 @@ class CatsListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        bind = DataBindingUtil.inflate(inflater, R.layout.fragment_cats_list, container, false)
+        bind = DataBindingUtil
+            .inflate(inflater, R.layout.fragment_cats_list, container, false)
 
         setHasOptionsMenu(true)
 
@@ -45,7 +46,8 @@ class CatsListFragment : Fragment() {
         val app = requireNotNull(this.activity).application
         val db = CatsDb.getInstance(app).catDbDao
 
-        val factory = CatsListViewModelFactory(requireContext(), requireContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!.path, db)
+        val factory = CatsListViewModelFactory(requireContext(), requireContext()
+            .getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!.path, db, this)
 
         viewModel = ViewModelProvider(this, factory).get(CatsListViewModel::class.java)
         viewModel.cats.observe(viewLifecycleOwner, Observer { cats -> adapter.cats = cats })

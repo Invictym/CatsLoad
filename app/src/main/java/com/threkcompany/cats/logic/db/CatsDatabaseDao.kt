@@ -1,6 +1,5 @@
 package com.threkcompany.cats.logic.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.threkcompany.cats.entity.Cat
 
@@ -17,9 +16,9 @@ interface CatsDatabaseDao {
     fun update(cat: Cat)
 
     @Query("SELECT * FROM cat_table")
-    fun getCats(): LiveData<List<Cat>>
+    fun getCats(): List<Cat>
 
     @Query("SELECT * FROM cat_table WHERE url=:url")
-    fun getCat(url: String): LiveData<Cat>
+    fun getCat(url: String): Cat
 
 }

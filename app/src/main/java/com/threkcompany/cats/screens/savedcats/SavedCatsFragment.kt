@@ -17,13 +17,10 @@ import com.threkcompany.cats.R
 import com.threkcompany.cats.databinding.FragmentCatsListBinding
 import com.threkcompany.cats.entity.Cat
 import com.threkcompany.cats.logic.db.CatsDb
+import com.threkcompany.cats.screens.base.BaseFragment
 import com.threkcompany.cats.screens.cats.adapters.CatsAdapter
 
-class SavedCatsFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SavedCatsFragment()
-    }
+class SavedCatsFragment : BaseFragment() {
 
     private lateinit var viewModel: SavedCatsViewModel
 
@@ -41,7 +38,7 @@ class SavedCatsFragment : Fragment() {
         val app = requireNotNull(this.activity).application
         val db = CatsDb.getInstance(app).catDbDao
         val factory = SavedCatsViewModelFactory(requireContext(), requireContext().getExternalFilesDir(
-            Environment.DIRECTORY_DOWNLOADS)!!.path, db)
+            Environment.DIRECTORY_DOWNLOADS)!!.path, db, this)
         viewModel = ViewModelProvider(this, factory).get(SavedCatsViewModel::class.java)
 
         val recyclerView = bind.catsList
@@ -62,7 +59,7 @@ class SavedCatsFragment : Fragment() {
         alertDialogBuilder.setTitle(R.string.delete_cats)
         alertDialogBuilder.setNegativeButton(R.string.cancel) { _, _ ->  }
         alertDialogBuilder.setNeutralButton(R.string.save_cat_to_storage) {_, _ -> viewModel.dialogResult(bitmap)}
-        alertDialogBuilder.setPositiveButton(R.string.apply) { _, _ -> viewModel.dialogResult(cat) }
+        alertDialogBuilder.setPositiveButton(R.string.apply) { _, _ -> viewModel.dialogResultRemove(cat) }
         alertDialogBuilder.create().show()
     }
 }
